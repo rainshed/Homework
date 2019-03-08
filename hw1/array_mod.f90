@@ -3,8 +3,8 @@
 module array
 	!real,external :: vec
 	integer,parameter :: dp = selected_real_kind(8)
-	contains
 
+contains
 !create a array with given initial value, end value and interval
 !---------------------------------------------------------------------
 	function vec(init,ed,inter) result(arr)
@@ -34,13 +34,3 @@ module array
 end module array
 !---------------------------------------------------------------------------------------------
 
-
-
-!------------------------------------------------------------------------------------------------
-
-program main
-	use array
-	write(*,*) vecn(1d0,10d0,10)
-end 
-
-	
