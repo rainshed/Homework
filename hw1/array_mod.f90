@@ -31,6 +31,26 @@ contains
 		  arr(i) = init + (i-1)*inter
 		end do
 	end function vecn
+!--------------------------------------------------------------------------
+
+!compute the inverse of complex matrix A
+!---------------------------------------------------------------------------
+	function inverse(A,N) result(inv)
+		implicit none
+		integer :: N
+		complex(8) :: A(N,N),work(N),inv(N,N)	
+		integer :: info1,info2,IPIV(N),Lwork =1000 
+		inv = A
+		call zgetrf(N,N,inv,N,IPIV,info1)
+		if (info1 /= 0) then 
+			write(*,*) 'zgetrf goes wrong'
+		end if
+		call zgetri(N,inv,N,IPIV,work,lwork,info2)
+		if (info2 /= 0) then
+			write(*,*) 'zgetri goes wrong'
+		end if
+	end function inverse
+!----------------------------------------------------------------------------
+
 end module array
 !---------------------------------------------------------------------------------------------
-
