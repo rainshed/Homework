@@ -2,8 +2,9 @@
 program main
 	use array
 	implicit none
-	integer,parameter :: x_num=201,base_num=100
-	real(8),parameter :: x_min=-1, x_max=1,a=1 !a = x_max-x_min
+	integer,parameter :: x_num=201,base_num=10
+	real(8),parameter :: hbar=1,m=1
+	real(8),parameter :: x_min=-4, x_max=4,a=1 !a = x_max-x_min
 	real(8),parameter :: pi = acos(-1d0)
 	real(8) :: x(x_num),v(x_num),psi(x_num,base_num),base(base_num,x_num),H(base_num,base_num)
 	real(8) :: dx = (x_max-x_min)/(x_num-1),V0
@@ -14,14 +15,16 @@ program main
 	integer :: Lwork = 1000,info
 
 
+	real(8) :: c=1, x0=1
 
 	x = vecn(x_min,x_max,x_num)
 	v = 0d0
 	do xnum=1,x_num
 		!define v(x)
-		if (abs(x(xnum))<0.5d0) then
-			v(xnum)=10 !which is dependent on different question
-		end if
+		v(xnum)= c*((x(xnum)**2-x0**2)**2/((4*x0**2)-x(xnum)**2))   !which can be set
+	!	if (abs(x(xnum))<0.5d0) then
+	!		v(xnum)=10 !which is dependent on different question
+	!	end if
 		!define base function
 		do n = 1,base_num
 			if (mod(n,2)==0) then
@@ -54,12 +57,12 @@ program main
 	end if
 
 	write(*,*) eigenvalue(1)
-	open(unit=11,file='data/p3_diag_eigenvalue.dat',status='unknown')
+	open(unit=11,file='data/p4_diag_eigenvalue.dat',status='unknown')
 	write(11,*) eigenvalue
 	close(11)
 	
 	psi = matmul(transpose(base),H)
-	open(unit=10,file='data/p3_diag.dat',status='unknown')
+	open(unit=10,file='data/p4_diag.dat',status='unknown')
 	do i = 1,x_num
 		write(10,*) x(i),(psi(i,1))**2
 	end do
