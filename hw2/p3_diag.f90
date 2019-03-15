@@ -5,7 +5,7 @@ program main
 	integer,parameter :: x_num=301,base_num=20
 	real(8),parameter :: x_min=-1, x_max=1,a=2 !a = x_max-x_min
 	real(8),parameter :: pi = acos(-1d0)
-	real(8) :: x(x_num),v(x_num),psi(x_num),base(base_num,x_num),H(base_num,base_num)
+	real(8) :: x(x_num),v(x_num),psi(x_num,base_num),base(base_num,x_num),H(base_num,base_num)
 	real(8) :: dx = (x_max-x_min)/(x_num-1),V0
 	integer :: xnum,n,i,j
 
@@ -40,17 +40,18 @@ program main
 		end do
 	end do
 
-	call DSYEV('N','U',base_num,H,base_num,eigenvalue,Work,Lwork,info)
+	call DSYEV('V','U',base_num,H,base_num,eigenvalue,Work,Lwork,info)
 	if (info /= 0) then
 		write(*,*) 'DSYEV error'
 		stop
 	end if
-	write(*,*) eigenvalue
+	open(unit=11,file='data/p3_diag_eigenvalue.dat',status='unknown')
+	write(11,*) eigenvalue
 	
-	psi = matmul(transpose(base),eigenvalue)
+	psi = matmul(transpose(base),H)
 	open(unit=10,file='data/p3_diag.dat',status='unknown')
 	do i = 1,x_num
-		write(10,*) x(i),psi(i)
+		write(10,*) x(i),psi(i,1)
 	end do
 
 	

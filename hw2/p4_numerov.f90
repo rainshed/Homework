@@ -7,7 +7,7 @@ program main
 	integer,parameter :: x_num = 300
 	integer :: xnum,i,j=11
 	real(8),parameter :: hbar=1,m=1
-	real(8),parameter :: x_min=-1 , x_max=2  ! which is need to set
+	real(8),parameter :: x_min=-4 , x_max=4  ! which is need to set
 	real(8) :: x(x_num),v(x_num),g(x_num),f(x_num),y(x_num),y_old(x_num)
 	real(8) :: E=0, ytotal
 	real(8) :: dx = (x_max-x_min)/(x_num-1),dE=0.0001
@@ -19,8 +19,8 @@ program main
 
 	!-------------------------------------------------------------------
 
-	open(unit=10,file='p4_energy_value.dat',status='unknown')
-	open(unit=11,file='p4_wave_function1.dat',status='unknown')
+	open(unit=10,file='data/p4_energy_value.dat',status='unknown')
+	open(unit=11,file='data/p4_wave_function.dat',status='unknown')
 
 	do i = 1,150000 
 
@@ -37,21 +37,24 @@ program main
 			y(xnum)=((12-10*f(xnum-1))*y(xnum-1)-f(xnum-2)*y(xnum-2))/f(xnum)
 			ytotal = ytotal + y(xnum)**2*dx
 		end do
+	!	write(*,*) ytotal
 		
 		do xnum=1,x_num
-			y(xnum) = y(xnum)/ytotal
+			y(xnum) = y(xnum)/sqrt(ytotal)
 		end do
+	!	write(*,*) y
+	!	stop
 	!	y_old(1) = 0
 	!	do xnum=1,x_num
 	!		y_old(1) = y_old(1)+y(xnum)*dx
 	!	end do
 	!	write(*,*) y_old(1)
+	!	write(*,*) y_old(x_num)*y(x_num)
 		
 		if (y_old(x_num)*y(x_num)<0.0d0) then
-			write(*,*) y(x_num)
 			write(10,*) E,'is the energy'
 			do xnum=1,x_num
-				write(j,*) x(xnum),y(xnum)
+				write(j,*) x(xnum),(y(xnum))**2
 			end do
 			exit
 !			E = E +0.2
