@@ -2,9 +2,8 @@
 program main
 	use array
 	implicit none
-	integer,parameter :: x_num=201,base_num=10
-	real(8),parameter :: hbar=1,m=1
-	real(8),parameter :: x_min=-4, x_max=4,a=1 !a = x_max-x_min
+	integer,parameter :: x_num=201,base_num=201
+	real(8),parameter :: x_min=-4, x_max=4,a=4 !a = x_max-x_min
 	real(8),parameter :: pi = acos(-1d0)
 	real(8) :: x(x_num),v(x_num),psi(x_num,base_num),base(base_num,x_num),H(base_num,base_num)
 	real(8) :: dx = (x_max-x_min)/(x_num-1),V0
@@ -13,18 +12,16 @@ program main
 	!-----parameters for DSYEV--------------------
 	real(8) :: eigenvalue(base_num),Work(1000)
 	integer :: Lwork = 1000,info
+	
+	real(8) :: x0=1,c=1
 
 
-	real(8) :: c=1, x0=1
 
 	x = vecn(x_min,x_max,x_num)
 	v = 0d0
 	do xnum=1,x_num
 		!define v(x)
-		v(xnum)= c*((x(xnum)**2-x0**2)**2/((4*x0**2)-x(xnum)**2))   !which can be set
-	!	if (abs(x(xnum))<0.5d0) then
-	!		v(xnum)=10 !which is dependent on different question
-	!	end if
+		v(xnum)= c*((x(xnum)**2-x0**2)**2/(4*x0**2)-x(xnum)**2)   !which can be set
 		!define base function
 		do n = 1,base_num
 			if (mod(n,2)==0) then
@@ -34,6 +31,7 @@ program main
 			end if
 		end do
 	end do
+!	write(*,*) v
 
 	H =0	
 	do i=1,base_num
@@ -45,10 +43,11 @@ program main
 				H(i,j) = (dble(i)*pi)**2/(8d0*a**2) + V0
 			!	write(*,*) H(i,j)
 			end if
-			H(j,i)=H(j,i)
+			H(j,i)=H(i,j)
 		end do
 	end do
 !	write(*,*) H
+!	stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	call DSYEV('V','U',base_num,H,base_num,eigenvalue,Work,Lwork,info)
 	if (info /= 0) then

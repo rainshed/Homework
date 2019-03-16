@@ -42,7 +42,7 @@ program main
 				H(i,j) = (dble(i)*pi)**2/(8d0*a**2) + V0
 			!	write(*,*) H(i,j)
 			end if
-			H(j,i)=H(j,i)
+			H(j,i)=H(i,j)
 		end do
 	end do
 !	write(*,*) H
