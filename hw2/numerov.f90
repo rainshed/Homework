@@ -41,10 +41,10 @@ program main
 	!	write(*,*) y_old(1)
 		
 		if (y_old(x_num)*y(x_num)<0.0d0) then
-			write(*,*) y(x_num)
+			write(*,*) E,'is the',j-11,'th energy' 
 			write(10,*) E,'is the energy'
 			do xnum=1,x_num
-				write(j,*) x(xnum),y(xnum)**2
+				write(j,*) x(xnum),y(xnum)
 			end do
 			E = E +0.2
 			j = j+1

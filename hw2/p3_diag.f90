@@ -2,7 +2,7 @@
 program main
 	use array
 	implicit none
-	integer,parameter :: x_num=201,base_num=100
+	integer,parameter :: x_num=201,base_num=500
 	real(8),parameter :: x_min=-1, x_max=1,a=1 !a = x_max-x_min
 	real(8),parameter :: pi = acos(-1d0)
 	real(8) :: x(x_num),v(x_num),psi(x_num,base_num),base(base_num,x_num),H(base_num,base_num)
@@ -10,8 +10,8 @@ program main
 	integer :: xnum,n,i,j
 
 	!-----parameters for DSYEV--------------------
-	real(8) :: eigenvalue(base_num),Work(1000)
-	integer :: Lwork = 1000,info
+	real(8) :: eigenvalue(base_num),Work(2000)
+	integer :: Lwork = 2000,info
 
 
 
@@ -61,7 +61,7 @@ program main
 	psi = matmul(transpose(base),H)
 	open(unit=10,file='data/p3_diag.dat',status='unknown')
 	do i = 1,x_num
-		write(10,*) x(i),(psi(i,1))**2
+		write(10,*) x(i),psi(i,1)
 	end do
 	close(10)
 

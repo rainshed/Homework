@@ -31,23 +31,18 @@ program main
 			end if
 		end do
 	end do
-!	write(*,*) v
 
 	H =0	
 	do i=1,base_num
 		do j=1,base_num
 			call Simpson(x_num,base(i,:),base(j,:),v,dx,V0)
 			H(i,j) = V0
-		!	write(*,*) V0
 			if (i==j) then
 				H(i,j) = (dble(i)*pi)**2/(8d0*a**2) + V0
-			!	write(*,*) H(i,j)
 			end if
 			H(j,i)=H(i,j)
 		end do
 	end do
-!	write(*,*) H
-!	stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	call DSYEV('V','U',base_num,H,base_num,eigenvalue,Work,Lwork,info)
 	if (info /= 0) then
@@ -63,7 +58,7 @@ program main
 	psi = matmul(transpose(base),H)
 	open(unit=10,file='data/p4_diag.dat',status='unknown')
 	do i = 1,x_num
-		write(10,*) x(i),(psi(i,1))**2
+		write(10,*) x(i),(psi(i,1))
 	end do
 	close(10)
 

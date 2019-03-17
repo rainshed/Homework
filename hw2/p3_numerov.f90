@@ -55,9 +55,10 @@ program main
 	!	write(*,*) y_old(x_num)*y(x_num)
 		
 		if (y_old(x_num)*y(x_num)<0.0d0) then
+			write(*,*) E,'is the energy'
 			write(10,*) E,'is the energy'
 			do xnum=1,x_num
-				write(j,*) x(xnum),(y(xnum))**2
+				write(j,*) x(xnum),y(xnum)
 			end do
 			exit
 !			E = E +0.2
