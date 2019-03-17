@@ -4,7 +4,7 @@ program main
 	implicit none	
 	!general parameter of numerov method
 	!------------------------------------------------------------------
-	integer,parameter :: x_num = 300
+	integer,parameter :: x_num =201 
 	integer :: xnum,i,j=11
 	real(8),parameter :: hbar=1,m=1
 	real(8),parameter :: x_min=-1 , x_max=1  ! which is need to set
