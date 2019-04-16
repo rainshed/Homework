@@ -49,7 +49,14 @@ program main
 	
 	inv = inverse(M1,Nj)
 	M1 = matmul(inv,M2)
-	do j=1,10
+
+	open(unit=12,file='hwplot.gp',status='unknown')
+	write(12,*) 'plot "final_results.dat"'
+!	write(12,*) 'pause 2'
+	close(12)
+
+
+	do j=1,100
 	psi_old = matmul(M1,psi_old)
 	
 	open(unit=11, file='final_results.dat',status = 'unknown')
@@ -57,6 +64,10 @@ program main
 		y(i) = sqrt(real(psi_old(i))**2 + aimag(psi_old(i))**2) 
 		write(11,*) dble(x(i)),y(i)
 	end do
+	close(11)
+	
+	call execute_command_line('gnuplot hwplot.gp')
+	call execute_command_line('rm -f hwplot')
 	end do 
 	
 
